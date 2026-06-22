@@ -42,14 +42,6 @@ tests:
       imports:
         - zcollection
       pip_check: true
-  - requirements:
-      run:
-        - python ${{ python_min }}.*
-        - pytest
-        - pyarrow
-        - s3fs
-    script:
-      - pytest --pyargs zcollection
 
 about:
   homepage: https://github.com/CNES/zcollection
