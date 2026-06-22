@@ -1,0 +1,62 @@
+schema_version: 1
+
+context:
+  name: zcollection
+  version: "2026.6.0"
+  python_min: "3.11"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: a977f72fc7596aeea3da3988c82b38f81eb154862365499000acb71b003a53dc
+
+build:
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  # All dependencies are required until we change the way the
+  # version number and file are generated.
+  host:
+    - python ${{ python_min }}.*
+    - setuptools >=45
+    - pip
+  run:
+    - dask >=2022.8.0
+    - distributed
+    - fasteners
+    - fsspec <=2025.12.0
+    - numcodecs <0.16
+    - numpy >=1.20
+    - pandas
+    - python >=${{ python_min }}
+    - xarray
+    - zarr >=2.11,<3
+
+tests:
+  - python:
+      imports:
+        - zcollection
+      pip_check: true
+
+about:
+  homepage: https://github.com/CNES/zcollection
+  summary: Handle a collection of Zarr groups
+  description: |
+    This project is a Python library manipulating data split into a collection of groups stored in Zarr format.
+    This collection allows dividing a dataset into several partitions to facilitate acquisitions or updates made
+    from new products. Possible data partitioning is: by date (hour, day, month, etc.)
+    or by sequence.
+  license: BSD-3-Clause
+  license_file: LICENSE
+  documentation: https://zcollection.readthedocs.io/en/latest/
+  repository: https://github.com/CNES/zcollection
+
+extra:
+  recipe-maintainers:
+    - fbriol
+    - Thomas-Z
